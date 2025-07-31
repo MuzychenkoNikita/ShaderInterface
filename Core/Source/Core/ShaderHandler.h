@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include <string>
 #include <fstream>
@@ -15,36 +16,43 @@ public:
     // ------------------------------------------------------------------------
     Shader(const char* vertexPath, const char* fragmentPath)
     {
-        // 1. retrieve the vertex/fragment source code from filePath
-        std::string vertexCode;
-        std::string fragmentCode;
-        std::ifstream vShaderFile;
-        std::ifstream fShaderFile;
+        
+        
         // ensure ifstream objects can throw exceptions:
-        vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-        fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        mvertexShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        mfragmentShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try
         {
             // open files
-            vShaderFile.open(vertexPath);
-            fShaderFile.open(fragmentPath);
+            mvertexShaderFile.open(vertexPath);
+            mfragmentShaderFile.open(fragmentPath);
             std::stringstream vShaderStream, fShaderStream;
             // read file's buffer contents into streams
-            vShaderStream << vShaderFile.rdbuf();
-            fShaderStream << fShaderFile.rdbuf();
+            vShaderStream << mvertexShaderFile.rdbuf();
+            fShaderStream << mfragmentShaderFile.rdbuf();
             // close file handlers
-            vShaderFile.close();
-            fShaderFile.close();
+            mvertexShaderFile.close();
+            mfragmentShaderFile.close();
             // convert stream into string
-            vertexCode = vShaderStream.str();
-            fragmentCode = fShaderStream.str();
+            mvertexCode = vShaderStream.str();
+            mfragmentCode = fShaderStream.str();
         }
         catch (std::ifstream::failure& e)
         {
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
         }
-        const char* vShaderCode = vertexCode.c_str();
-        const char* fShaderCode = fragmentCode.c_str();
+        setup();
+    }
+    // activate the shader
+    // ------------------------------------------------------------------------
+    void use()
+    {
+        glUseProgram(ID);
+    }
+    void setup()
+    {
+        const char* vShaderCode = mvertexCode.c_str();
+        const char* fShaderCode = mfragmentCode.c_str();
         // 2. compile shaders
         unsigned int vertex, fragment;
         // vertex shader
@@ -67,12 +75,6 @@ public:
         glDeleteShader(vertex);
         glDeleteShader(fragment);
     }
-    // activate the shader
-    // ------------------------------------------------------------------------
-    void use()
-    {
-        glUseProgram(ID);
-    }
     // utility uniform functions
     // ------------------------------------------------------------------------
     void setBool(const std::string& name, bool value) const
@@ -89,8 +91,25 @@ public:
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
+    // ------------------------------------------------------------------------
+    void setVec2(const std::string& name, const glm::vec2& value) const
+    {
+        glUniform2fv(glGetUniformLocation(ID, name.c_str()), 1, &value[0]);
+    }
+    // ------------------------------------------------------------------------
+    void setFragmentCode(const std::string fragmentCode)
+    {
+        mfragmentCode = fragmentCode;
+    }
+    std::string getFragmentCode() { return mfragmentCode; };
 
 private:
+
+    std::string mvertexCode;
+    std::string mfragmentCode;
+    std::ifstream mvertexShaderFile;
+    std::ifstream mfragmentShaderFile;
+
     // utility function for checking shader compilation/linking errors.
     // ------------------------------------------------------------------------
     void checkCompileErrors(unsigned int shader, std::string type)
