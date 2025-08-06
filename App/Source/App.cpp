@@ -56,7 +56,7 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("Source/Shaders/vert.glsl", "Source/Shaders/frag.glsl"); // you can name your shader files however you like
+    SHAD::Shader mainShader("Source/Shaders/vert.glsl", "Source/Shaders/frag.glsl"); // you can name your shader files however you like
 
     float vertices[] = {
         // positions
@@ -138,27 +138,47 @@ int main()
 
         // Editor
         if (ImGui::Begin("Editor", NULL, ImGuiWindowFlags_MenuBar)) {
-            if (ImGui::Shortcut(ImGuiModFlags_Ctrl + ImGuiKey_MouseWheelY, NULL)) {
-                fontMultiplier += (float)io.MouseWheel / 10.;
-                if (fontMultiplier > 0)ImGui::SetWindowFontScale(fontMultiplier);
-            }
-
-            std::string str = ourShader.getFragmentCode();
-            static char text[9256];  // adjust size as needed
-
+            //float lineHeightRatio = ImGui::GetTextLineHeightWithSpacing() / ImGui::GetTextMu();
+            std::string str = mainShader.getFragmentCode();
+            static char text[9256];
             // Copy string content
             std::strncpy(text, str.c_str(), sizeof(text));
-
             // Ensure null-termination
             text[sizeof(text) - 1] = '\0';
 
-            ImGui::PushFont(evangelionFont);
-            static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
-            ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(-FLT_MIN, -FLT_MIN), flags);
-            str = text;
-            ourShader.setFragmentCode(str);
-            ourShader.setup();
-            ImGui::PopFont();
+            // Line Numbers
+            if (ImGui::BeginChild("LineNumbers", ImVec2(20 * fontMultiplier, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar)) {
+                ImGui::SetWindowFontScale(fontMultiplier);
+                int lineCount = 1;
+                for (const char* c = text; *c; c++) {
+                    if (*c == '\n') lineCount++;
+                }
+
+                for (int i = 1; i <= lineCount; ++i) {
+                    ImGui::SetCursorPosY((i - 1) * fontMultiplier * 13 + 2.5);
+                    ImGui::SetCursorPosX(20 * fontMultiplier - (ImGui::CalcTextSize("1").x * std::to_string(i).length()));
+                    ImGui::Text("%d", i);
+                }
+            }ImGui::EndChild();
+
+            ImGui::SameLine();
+
+            // Text Area
+            if (ImGui::BeginChild("TextArea", ImVec2(-FLT_MIN, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar))
+            {
+                if (ImGui::Shortcut(ImGuiModFlags_Ctrl + ImGuiKey_MouseWheelY, NULL)) {
+                    fontMultiplier += (float)io.MouseWheel / 10.;
+                    if (fontMultiplier > 0) ImGui::SetWindowFontScale(fontMultiplier);
+                }
+
+                //ImGui::PushFont(evangelionFont);
+                static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
+                ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(-FLT_MIN, -FLT_MIN), flags);
+                str = text;
+                mainShader.setFragmentCode(str);
+                mainShader.setup();
+                //ImGui::PopFont();
+            }ImGui::EndChild();
         }ImGui::End();
 
         // processes all the UI elements
@@ -168,9 +188,9 @@ int main()
         // ------
         customFramebuffer.BindBuffer();
 
-        ourShader.use();
-        ourShader.setFloat("iTime", glfwGetTime());
-        ourShader.setVec2("iResolution", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
+        mainShader.use();
+        mainShader.setFloat("iTime", glfwGetTime());
+        mainShader.setVec2("iResolution", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
