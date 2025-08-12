@@ -1,0 +1,384 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		86F7700498AEAFF60E1C9E44 /* libCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBF654C5FA7DCFE81F58B8C /* libCore.a */; };
+		D4A6CE04BF92F3F60778BC44 /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0E9D5EC853C739E9774BC2C /* App.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2FD6DAC455FD0A76BD040104 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 67B1D9F5FD2899276BC4F035 /* ../Core/Core.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5F8A54BE8E30A8B0E77202FE;
+			remoteInfo = libCore.a;
+		};
+		DD9C682B03C297DD6AC98E6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 67B1D9F5FD2899276BC4F035 /* ../Core/Core.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0B1217D80E82EA0A8FEF8E18;
+			remoteInfo = libCore.a;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2448D2E14C838B93341F1921 /* frag.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = frag.glsl; path = Source/Shaders/frag.glsl; sourceTree = "<group>"; };
+		67B1D9F5FD2899276BC4F035 /* libCore.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Core.xcodeproj"; path = ../Core/Core.xcodeproj; sourceTree = SOURCE_ROOT; };
+		720835C39A42EE7581DE7C03 /* vert.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = vert.glsl; path = Source/Shaders/vert.glsl; sourceTree = "<group>"; };
+		84E0B32AD4F447DC5772796A /* App */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = App; path = App; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0E9D5EC853C739E9774BC2C /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = App.cpp; path = Source/App.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C8F3A39AB4E4AF4C071C49DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86F7700498AEAFF60E1C9E44 /* libCore.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AA364286569902B8152178C6 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXGroup section */
+		70DA1C0B6A401D7D5DDB7A4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBBF654C5FA7DCFE81F58B8C /* libCore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9D968EAA920D05DCE0E0A4EA /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				67B1D9F5FD2899276BC4F035 /* Core.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		A6C936B49B3FADE6EA134CF4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84E0B32AD4F447DC5772796A /* App */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C882275C6CD4C50E7F0D0D9C /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				2448D2E14C838B93341F1921 /* frag.glsl */,
+				720835C39A42EE7581DE7C03 /* vert.glsl */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+		E1231441EC53C43345F64281 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E0E9D5EC853C739E9774BC2C /* App.cpp */,
+				C882275C6CD4C50E7F0D0D9C /* Shaders */,
+				A6C936B49B3FADE6EA134CF4 /* Products */,
+				9D968EAA920D05DCE0E0A4EA /* Projects */,
+			);
+			name = App;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D69CDD056249442E5BBCC10 /* App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B72EEBF9A31FF7ABF5579239 /* Build configuration list for PBXNativeTarget "App" */;
+			buildPhases = (
+				38DB243A24CC2FEC7703CA7A /* Resources */,
+				A2883D918E794943E0B0E3D1 /* Sources */,
+				C8F3A39AB4E4AF4C071C49DA /* Frameworks */,
+				AA364286569902B8152178C6 /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5E92591457F85A864B93B754 /* PBXTargetDependency */,
+			);
+			name = App;
+			productInstallPath = "$(HOME)/bin";
+			productName = App;
+			productReference = 84E0B32AD4F447DC5772796A /* App */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "App" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			mainGroup = E1231441EC53C43345F64281 /* App */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 70DA1C0B6A401D7D5DDB7A4B /* Products */;
+					ProjectRef = 67B1D9F5FD2899276BC4F035 /* Core.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1D69CDD056249442E5BBCC10 /* App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EBBF654C5FA7DCFE81F58B8C /* libCore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCore.a;
+			remoteRef = DD9C682B03C297DD6AC98E6B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		38DB243A24CC2FEC7703CA7A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A2883D918E794943E0B0E3D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4A6CE04BF92F3F60778BC44 /* App.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5E92591457F85A864B93B754 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libCore.a;
+			targetProxy = 2FD6DAC455FD0A76BD040104 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		093B571D734DD90F0C78C55D /* Dist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DIST,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../Dependencies/lib-arm64",
+					"../Dependencies/lib-universal",
+					../Dependencies/lib,
+				);
+				OBJROOT = "../Binaries/Intermediates/macosx-ARM64/Dist/App";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-lglfw3",
+					"-framework Cocoa",
+					"-framework IOKit",
+					"-framework CoreVideo",
+					"-framework OpenGL",
+				);
+				SYMROOT = "../Binaries/macosx-ARM64/Dist/App";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					../Dependencies/include,
+					"$(inherited)",
+				);
+				USER_HEADER_SEARCH_PATHS = (
+					Source,
+					../Core/Source,
+				);
+			};
+			name = Dist;
+		};
+		5EFCF42AAF1088DC318EBA6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					RELEASE,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../Dependencies/lib-arm64",
+					"../Dependencies/lib-universal",
+					../Dependencies/lib,
+				);
+				OBJROOT = "../Binaries/Intermediates/macosx-ARM64/Release/App";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-lglfw3",
+					"-framework Cocoa",
+					"-framework IOKit",
+					"-framework CoreVideo",
+					"-framework OpenGL",
+				);
+				SYMROOT = "../Binaries/macosx-ARM64/Release/App";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					../Dependencies/include,
+					"$(inherited)",
+				);
+				USER_HEADER_SEARCH_PATHS = (
+					Source,
+					../Core/Source,
+				);
+			};
+			name = Release;
+		};
+		69A5DDF016089E22D4911430 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"../Dependencies/lib-arm64",
+					"../Dependencies/lib-universal",
+					../Dependencies/lib,
+				);
+				OBJROOT = "../Binaries/Intermediates/macosx-ARM64/Debug/App";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lglfw3",
+					"-framework Cocoa",
+					"-framework IOKit",
+					"-framework CoreVideo",
+					"-framework OpenGL",
+				);
+				SYMROOT = "../Binaries/macosx-ARM64/Debug/App";
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					../Dependencies/include,
+					"$(inherited)",
+				);
+				USER_HEADER_SEARCH_PATHS = (
+					Source,
+					../Core/Source,
+				);
+			};
+			name = Debug;
+		};
+		A1C764F9B8DA002BA8F5FB39 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../Binaries/macosx-ARM64/Release/App";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = latest;
+				PRODUCT_NAME = App;
+			};
+			name = Release;
+		};
+		A51BBE3F4809E4F1D72FC47F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../Binaries/macosx-ARM64/Debug/App";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = latest;
+				PRODUCT_NAME = App;
+			};
+			name = Debug;
+		};
+		C5E853AC37736C1EE67491EC /* Dist */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = "../Binaries/macosx-ARM64/Dist/App";
+				GCC_DYNAMIC_NO_PIC = NO;
+				INSTALL_PATH = /usr/local/bin;
+				MACOSX_DEPLOYMENT_TARGET = latest;
+				PRODUCT_NAME = App;
+			};
+			name = Dist;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69A5DDF016089E22D4911430 /* Debug */,
+				5EFCF42AAF1088DC318EBA6A /* Release */,
+				093B571D734DD90F0C78C55D /* Dist */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B72EEBF9A31FF7ABF5579239 /* Build configuration list for PBXNativeTarget "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A51BBE3F4809E4F1D72FC47F /* Debug */,
+				A1C764F9B8DA002BA8F5FB39 /* Release */,
+				C5E853AC37736C1EE67491EC /* Dist */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+};
+rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

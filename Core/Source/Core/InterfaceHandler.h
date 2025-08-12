@@ -31,8 +31,8 @@ namespace SHAD
             io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
-            ImFont* defaultFont = io->Fonts->AddFontDefault();
-            ImFont* evangelionFont = io->Fonts->AddFontFromFileTTF("Source/Fonts/Times-New-Roman-MT-Std-Bold-Condensed.otf", 20.0f);
+            //ImFont* defaultFont = io->Fonts->AddFontDefault();
+            //ImFont* evangelionFont = io->Fonts->AddFontFromFileTTF("Source/Fonts/Times-New-Roman-MT-Std-Bold-Condensed.otf", 20.0f);
 
             // Setup Dear ImGui style
             ImGui::StyleColorsDark();
