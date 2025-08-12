@@ -6,6 +6,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <Core/stb_image.h>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
@@ -28,6 +31,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    //glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -44,6 +48,12 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    // set window icon
+    GLFWimage images[1];
+    images[0].pixels = stbi_load("Source/Textures/icon.png", &images[0].width, &images[0].height, 0, 4);
+    glfwSetWindowIcon(window, 1, images);
+    stbi_image_free(images[0].pixels);
     
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -84,7 +94,7 @@ int main()
 
     SHAD::Framebuffer customFramebuffer(1920, 1080);
 
-    SHAD::Interface mainInterface(window);
+    SHAD::Interface mainInterface(window, customFramebuffer, mainShader);
 
     // render loop
     // -----------
@@ -95,7 +105,7 @@ int main()
         processInput(window);
 
         // ImGui Render
-        mainInterface.renderInterface(customFramebuffer, mainShader);
+        mainInterface.renderInterface();
 
         // render
         // ------
