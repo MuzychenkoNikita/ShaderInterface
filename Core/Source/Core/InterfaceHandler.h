@@ -4,12 +4,13 @@
 #include "Core/Framebuffer.h"
 #include "Core/ShaderHandler.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
+
+#include "Core/tinyfiledialogs/tinyfiledialogs.h"
 
 
 namespace SHAD 
@@ -17,9 +18,11 @@ namespace SHAD
     class Interface
     {
     public:
-        Interface(GLFWwindow* window)
+        Interface(GLFWwindow* window, Framebuffer& customFramebuffer, Shader& mainShader)
             : mWindow(window)
-            , fontMultiplier(1.)
+            , mCustomFramebuffer(customFramebuffer)
+            , mMainShader(mainShader)
+            , mFontMultiplier(1.)
             , io(nullptr)
         {
             // Setup Dear ImGui context
@@ -110,23 +113,53 @@ namespace SHAD
         
         ~Interface() {}
 
-        inline void renderInterface(Framebuffer& customFramebuffer, Shader& mainShader) {
+        inline void renderInterface() {
             // ImGui Render
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
             ImGui::DockSpaceOverViewport();
 
+
+            // Menu
+            if (ImGui::BeginMainMenuBar())
+            {
+                ImGui::SetWindowFontScale(1.2);
+                if (ImGui::BeginMenu("File"))
+                {
+                    showFileMenu();
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Edit"))
+                {
+                    if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+                    if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+                    if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+                    if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("=")){
+                    glfwSetWindowSize(mWindow, 1920 / 2, 1080 / 2);
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("X")) {
+                    glfwSetWindowShouldClose(mWindow, true);
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMainMenuBar();
+            }
             // Viewport
-            if (ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            if (ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoScrollbar)) {
+                //ImGui::SetWindowFontScale(1.2);
                 ImVec2 windowSize = ImGui::GetContentRegionAvail();
-                ImGui::Image((void*)customFramebuffer.GetTextureID(), ImVec2(windowSize.x, windowSize.x * 9 / 16), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
+                ImGui::Image((void*)mCustomFramebuffer.GetTextureID(), ImVec2(windowSize.x, windowSize.x * 9 / 16), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
             }ImGui::End();
 
             // Editor
-            if (ImGui::Begin("Editor", NULL, ImGuiWindowFlags_MenuBar)) {
-                //float lineHeightRatio = ImGui::GetTextLineHeightWithSpacing() / ImGui::GetTextMu();
-                std::string str = mainShader.getFragmentCode();
+            if (ImGui::Begin("Editor", NULL, ImGuiWindowFlags_NoScrollbar)) {
+                std::string str = mMainShader.getFragmentCode();
                 static char text[9256];
                 // Copy string content
                 std::strncpy(text, str.c_str(), sizeof(text));
@@ -134,16 +167,16 @@ namespace SHAD
                 text[sizeof(text) - 1] = '\0';
 
                 // Line Numbers
-                if (ImGui::BeginChild("LineNumbers", ImVec2(20 * fontMultiplier, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar)) {
-                    ImGui::SetWindowFontScale(fontMultiplier);
+                if (ImGui::BeginChild("LineNumbers", ImVec2(20 * mFontMultiplier, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar)) {
+                    ImGui::SetWindowFontScale(mFontMultiplier);
                     int lineCount = 1;
                     for (const char* c = text; *c; c++) {
                         if (*c == '\n') lineCount++;
                     }
 
                     for (int i = 1; i <= lineCount; ++i) {
-                        ImGui::SetCursorPosY((i - 1) * fontMultiplier * 13 + 2.5);
-                        ImGui::SetCursorPosX(20 * fontMultiplier - (ImGui::CalcTextSize("1").x * std::to_string(i).length()));
+                        ImGui::SetCursorPosY((i - 1) * mFontMultiplier * 13 + 2.5);
+                        ImGui::SetCursorPosX(20 * mFontMultiplier - (ImGui::CalcTextSize("1").x * std::to_string(i).length()));
                         ImGui::Text("%d", i);
                     }
                 }ImGui::EndChild();
@@ -154,16 +187,16 @@ namespace SHAD
                 if (ImGui::BeginChild("TextArea", ImVec2(-FLT_MIN, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar))
                 {
                     if (ImGui::Shortcut(ImGuiModFlags_Ctrl + ImGuiKey_MouseWheelY, NULL)) {
-                        fontMultiplier += (float)io->MouseWheel / 10.;
-                        if (fontMultiplier > 0) ImGui::SetWindowFontScale(fontMultiplier);
+                        mFontMultiplier += (float)io->MouseWheel / 10.;
+                        if (mFontMultiplier > 0) ImGui::SetWindowFontScale(mFontMultiplier);
                     }
 
                     //ImGui::PushFont(evangelionFont);
-                    static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
+                    static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput | ImGuiInputTextFlags_NoHorizontalScroll;
                     ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(-FLT_MIN, -FLT_MIN), flags);
                     str = text;
-                    mainShader.setFragmentCode(str);
-                    mainShader.setup();
+                    mMainShader.setFragmentCode(str);
+                    mMainShader.setup();
                     //ImGui::PopFont();
                 }ImGui::EndChild();
             }ImGui::End();
@@ -184,11 +217,51 @@ namespace SHAD
             }
         }
 
-
+        void showFileMenu() {
+            ImGui::MenuItem("(demo menu)", NULL, false, false);
+            if (ImGui::MenuItem("New")) {
+                mMainShader.setFragmentPath(tinyfd_saveFileDialog("", "", 0, NULL, NULL));
+                mMainShader.newFragmentFile();
+                std::cout << "New file created at " + std::string(mMainShader.getFragmentPath()) + "\n";
+            }
+            if (ImGui::MenuItem("Open", "Ctrl+O")) { 
+                mMainShader.setFragmentPath(tinyfd_openFileDialog("Bruh", "", 0, NULL, NULL, 0));
+                mMainShader.openFragmentFile();
+                std::cout << "Opened file from " + std::string(mMainShader.getFragmentPath()) + "\n";
+            }
+            if (ImGui::BeginMenu("Open Recent"))
+            {
+                ImGui::MenuItem("fish_hat.c");
+                ImGui::MenuItem("fish_hat.inl");
+                ImGui::MenuItem("fish_hat.h");
+                if (ImGui::BeginMenu("More.."))
+                {
+                    ImGui::MenuItem("Hello");
+                    ImGui::MenuItem("Sailor");
+                    if (ImGui::BeginMenu("Recurse.."))
+                    {
+                        ImGui::EndMenu();
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenu();
+            }
+            if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                mMainShader.saveFragmentFile();
+                std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+            }
+            if (ImGui::MenuItem("Save As..")) {
+                mMainShader.setFragmentPath(tinyfd_saveFileDialog("", "", 0, NULL, NULL));
+                mMainShader.saveFragmentFile();
+                std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+            }
+        }
 
     private:
         GLFWwindow* mWindow;
-        float fontMultiplier;
+        Framebuffer& mCustomFramebuffer;
+        Shader& mMainShader;
+        float mFontMultiplier;
         ImGuiIO* io;
     };
 

@@ -19,26 +19,27 @@ namespace SHAD
         // ------------------------------------------------------------------------
         Shader(const char* vertexPath, const char* fragmentPath)
         {
-
+            setVertexPath(vertexPath);
+            setFragmentPath(fragmentPath);
 
             // ensure ifstream objects can throw exceptions:
-            mvertexShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-            mfragmentShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            mVertexShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            mFragmentShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
             try
             {
                 // open files
-                mvertexShaderFile.open(vertexPath);
-                mfragmentShaderFile.open(fragmentPath);
+                mVertexShaderFile.open(vertexPath);
+                mFragmentShaderFile.open(fragmentPath);
                 std::stringstream vShaderStream, fShaderStream;
                 // read file's buffer contents into streams
-                vShaderStream << mvertexShaderFile.rdbuf();
-                fShaderStream << mfragmentShaderFile.rdbuf();
+                vShaderStream << mVertexShaderFile.rdbuf();
+                fShaderStream << mFragmentShaderFile.rdbuf();
                 // close file handlers
-                mvertexShaderFile.close();
-                mfragmentShaderFile.close();
+                mVertexShaderFile.close();
+                mFragmentShaderFile.close();
                 // convert stream into string
-                mvertexCode = vShaderStream.str();
-                mfragmentCode = fShaderStream.str();
+                mVertexCode = vShaderStream.str();
+                mFragmentCode = fShaderStream.str();
             }
             catch (std::ifstream::failure& e)
             {
@@ -54,8 +55,11 @@ namespace SHAD
         }
         void setup()
         {
-            const char* vShaderCode = mvertexCode.c_str();
-            const char* fShaderCode = mfragmentCode.c_str();
+            // delete previous program if any
+            if (ID) { glDeleteProgram(ID); ID = 0; }
+
+            const char* vShaderCode = mVertexCode.c_str();
+            const char* fShaderCode = mFragmentCode.c_str();
             // 2. compile shaders
             unsigned int vertex, fragment;
             // vertex shader
@@ -102,16 +106,71 @@ namespace SHAD
         // ------------------------------------------------------------------------
         void setFragmentCode(const std::string fragmentCode)
         {
-            mfragmentCode = fragmentCode;
+            mFragmentCode = fragmentCode;
         }
-        std::string getFragmentCode() { return mfragmentCode; };
+        // ------------------------------------------------------------------------
+        std::string getFragmentCode() { return mFragmentCode; };
+        // ------------------------------------------------------------------------
+        void setFragmentPath(const char* fragmentPath)
+        {
+            mFragmentPath = fragmentPath;
+        }
+        // ------------------------------------------------------------------------
+        const char* getFragmentPath() { return mFragmentPath; }
+        // ------------------------------------------------------------------------
+        void setVertexPath(const char* vertexPath)
+        {
+            mVertexPath = vertexPath;
+        }
+        // ------------------------------------------------------------------------
+        const char* getVertexPath() { return mVertexPath; }
+        // ------------------------------------------------------------------------
+        void saveFragmentFile()
+        {
+            std::ofstream file(mFragmentPath);
+            file << mFragmentCode;
+            file.close();
+        }
+        // ------------------------------------------------------------------------
+        void openFragmentFile()
+        {
+            try
+            {
+                // open files
+                mFragmentShaderFile.open(mFragmentPath);
+                std::stringstream vShaderStream, fShaderStream;
+                // read file's buffer contents into streams
+                fShaderStream << mFragmentShaderFile.rdbuf();
+                // close file handlers
+                mFragmentShaderFile.close();
+                // convert stream into string
+                mFragmentCode = fShaderStream.str();
+            }
+            catch (std::ifstream::failure& e)
+            {
+                std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
+            }
+            setup();
+        }
+        // ------------------------------------------------------------------------
+        void newFragmentFile()
+        {
+            std::ofstream file(mFragmentPath);
+            file << "#version 330 core\nout vec4 FragColor;\nin vec2 TexCoord;\nvec2 FragCoord = gl_FragCoord.xy;\n\nuniform float iTime;\nuniform vec2 iResolution;\n\nvoid main()\n{\n    vec2 uv = FragCoord/iResolution.xy;\n    vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));\n    FragColor = vec4(col, 1.0);\n}"
+;
+            file.close();
+            openFragmentFile();
+        }
+
 
     private:
 
-        std::string mvertexCode;
-        std::string mfragmentCode;
-        std::ifstream mvertexShaderFile;
-        std::ifstream mfragmentShaderFile;
+        std::string mVertexCode;
+        std::string mFragmentCode;
+        std::ifstream mVertexShaderFile;
+        std::ifstream mFragmentShaderFile;
+        const char* mVertexPath;
+        const char* mFragmentPath;
 
         // utility function for checking shader compilation/linking errors.
         // ------------------------------------------------------------------------
