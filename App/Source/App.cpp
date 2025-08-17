@@ -7,7 +7,7 @@
 #include <GLFW/glfw3.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <Core/stb_image.h>
+#include "Core/stb_image.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
@@ -65,8 +65,8 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    SHAD::Shader mainShader("Source/Shaders/vert.glsl", "Source/Shaders/frag.glsl"); // you can name your shader files however you like
-
+    SHAD::Shader mainShader;
+    //mainShader.setFragmentCode();
     float vertices[] = {
         // positions
         -1.0f,  1.0f, 0.0f,  // top left

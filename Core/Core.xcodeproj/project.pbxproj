@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		189D0772729E1E6439E515B2 /* imgui_impl_opengl3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57804E1A724CBCCC761D545A /* imgui_impl_opengl3.cpp */; };
 		2293A4121BF9A5840F950252 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 9697551A39E2DE4C54B3AB5A /* glad.c */; };
+		46945FE6A09576D867DC6E26 /* tinyfiledialogs.c in Sources */ = {isa = PBXBuildFile; fileRef = E5D8730E00A4E1C00475794E /* tinyfiledialogs.c */; };
 		5F437C0E2203DC807F38BA4E /* imgui_widgets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59EFFDF63E370628C2243436 /* imgui_widgets.cpp */; };
 		6308CDA25CCA8A1496C98BE2 /* imgui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 85B39C4ACE24807C12C3528A /* imgui.cpp */; };
 		64F04AD606D9E6C8FE00F916 /* imgui_tables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1D2FF3E7FF652F00704A57E /* imgui_tables.cpp */; };
@@ -24,6 +25,7 @@
 		11D824A4AA250A56D86C0AE4 /* imgui_impl_opengl3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui_impl_opengl3.h; path = Source/Core/imgui/imgui_impl_opengl3.h; sourceTree = "<group>"; };
 		1C2B3630EA4E89E2715CDC70 /* imstb_textedit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imstb_textedit.h; path = Source/Core/imgui/imstb_textedit.h; sourceTree = "<group>"; };
 		1D56DFDEEB7A33907288861E /* imstb_truetype.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imstb_truetype.h; path = Source/Core/imgui/imstb_truetype.h; sourceTree = "<group>"; };
+		496D1738643985EA680A1D78 /* tinyfiledialogs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tinyfiledialogs.h; path = Source/Core/tinyfiledialogs/tinyfiledialogs.h; sourceTree = "<group>"; };
 		500811C6F3539AF80E246806 /* Core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Core.h; path = Source/Core/Core.h; sourceTree = "<group>"; };
 		57804E1A724CBCCC761D545A /* imgui_impl_opengl3.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_impl_opengl3.cpp; path = Source/Core/imgui/imgui_impl_opengl3.cpp; sourceTree = "<group>"; };
 		59836E928B7CB944055BF4D2 /* imgui_demo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_demo.cpp; path = Source/Core/imgui/imgui_demo.cpp; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 		B1D2FF3E7FF652F00704A57E /* imgui_tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = imgui_tables.cpp; path = Source/Core/imgui/imgui_tables.cpp; sourceTree = "<group>"; };
 		BDBBC4CC8BDF187E12ED6B0C /* imgui_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui_internal.h; path = Source/Core/imgui/imgui_internal.h; sourceTree = "<group>"; };
 		C18FA8AAE7B5D85C4EBCCEEA /* stb_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = Source/Core/stb_image.h; sourceTree = "<group>"; };
+		E5D8730E00A4E1C00475794E /* tinyfiledialogs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = tinyfiledialogs.c; path = Source/Core/tinyfiledialogs/tinyfiledialogs.c; sourceTree = "<group>"; };
 		F14C40B4085EDBE6F87AD6F4 /* imgui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui.h; path = Source/Core/imgui/imgui.h; sourceTree = "<group>"; };
 		F9696270938D57A243B338B0 /* imgui_impl_opengl3_loader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = imgui_impl_opengl3_loader.h; path = Source/Core/imgui/imgui_impl_opengl3_loader.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +72,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXGroup section */
+		51223336148DF4E853319976 /* tinyfiledialogs */ = {
+			isa = PBXGroup;
+			children = (
+				E5D8730E00A4E1C00475794E /* tinyfiledialogs.c */,
+				496D1738643985EA680A1D78 /* tinyfiledialogs.h */,
+			);
+			name = tinyfiledialogs;
+			sourceTree = "<group>";
+		};
 		99E500890B2BAEBB991DF6C9 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +92,7 @@
 				9697551A39E2DE4C54B3AB5A /* glad.c */,
 				E93F539E3952E850BBD119DE /* imgui */,
 				C18FA8AAE7B5D85C4EBCCEEA /* stb_image.h */,
+				51223336148DF4E853319976 /* tinyfiledialogs */,
 				A6C936B49B3FADE6EA134CF4 /* Products */,
 			);
 			name = Core;
@@ -178,6 +191,7 @@
 				189D0772729E1E6439E515B2 /* imgui_impl_opengl3.cpp in Sources */,
 				64F04AD606D9E6C8FE00F916 /* imgui_tables.cpp in Sources */,
 				5F437C0E2203DC807F38BA4E /* imgui_widgets.cpp in Sources */,
+				46945FE6A09576D867DC6E26 /* tinyfiledialogs.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

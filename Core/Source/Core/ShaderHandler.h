@@ -10,6 +10,9 @@
 
 namespace SHAD
 {
+std::string defaultFrag = "#version 330 core\nout vec4 FragColor;\nin vec2 TexCoord;\nvec2 FragCoord = gl_FragCoord.xy;\n\nuniform float iTime;\nuniform vec2 iResolution;\n\nvoid main()\n{\n    vec2 uv = FragCoord/iResolution.xy;\n    vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));\n    FragColor = vec4(col, 1.0);\n}";
+
+std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos;\nlayout (location = 1) in vec3 aColor;\nout vec2 TexCoord;\nvoid main()\n{\n    TexCoord = vec2(aPos.x, aPos.y);\n    gl_Position = vec4(aPos.x, 0. - aPos.y, aPos.z, 1.0);\n}";
 
     class Shader
     {
@@ -17,34 +20,10 @@ namespace SHAD
         unsigned int ID;
         // constructor generates the shader on the fly
         // ------------------------------------------------------------------------
-        Shader(const char* vertexPath, const char* fragmentPath)
+        Shader()
         {
-            setVertexPath(vertexPath);
-            setFragmentPath(fragmentPath);
-
-            // ensure ifstream objects can throw exceptions:
-            mVertexShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-            mFragmentShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-            try
-            {
-                // open files
-                mVertexShaderFile.open(vertexPath);
-                mFragmentShaderFile.open(fragmentPath);
-                std::stringstream vShaderStream, fShaderStream;
-                // read file's buffer contents into streams
-                vShaderStream << mVertexShaderFile.rdbuf();
-                fShaderStream << mFragmentShaderFile.rdbuf();
-                // close file handlers
-                mVertexShaderFile.close();
-                mFragmentShaderFile.close();
-                // convert stream into string
-                mVertexCode = vShaderStream.str();
-                mFragmentCode = fShaderStream.str();
-            }
-            catch (std::ifstream::failure& e)
-            {
-                std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
-            }
+            setFragmentCode(defaultFrag);
+            setVertexCode(defaultVert);
             setup();
         }
         // activate the shader
@@ -109,6 +88,11 @@ namespace SHAD
             mFragmentCode = fragmentCode;
         }
         // ------------------------------------------------------------------------
+        void setVertexCode(const std::string vertexCode)
+        {
+            mVertexCode = vertexCode;
+        }
+        // ------------------------------------------------------------------------
         std::string getFragmentCode() { return mFragmentCode; };
         // ------------------------------------------------------------------------
         void setFragmentPath(const char* fragmentPath)
@@ -156,8 +140,7 @@ namespace SHAD
         void newFragmentFile()
         {
             std::ofstream file(mFragmentPath);
-            file << "#version 330 core\nout vec4 FragColor;\nin vec2 TexCoord;\nvec2 FragCoord = gl_FragCoord.xy;\n\nuniform float iTime;\nuniform vec2 iResolution;\n\nvoid main()\n{\n    vec2 uv = FragCoord/iResolution.xy;\n    vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));\n    FragColor = vec4(col, 1.0);\n}"
-;
+            file << defaultFrag;
             file.close();
             openFragmentFile();
         }

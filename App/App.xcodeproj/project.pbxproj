@@ -14,38 +14,19 @@
 /* Begin PBXContainerItemProxy section */
 		2FD6DAC455FD0A76BD040104 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 67B1D9F5FD2899276BC4F035 /* ../Core/Core.xcodeproj */;
+			containerPortal = 67B1D9F5FD2899276BC4F035 /* Core.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 5F8A54BE8E30A8B0E77202FE;
 			remoteInfo = libCore.a;
 		};
 		DD9C682B03C297DD6AC98E6B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 67B1D9F5FD2899276BC4F035 /* ../Core/Core.xcodeproj */;
+			containerPortal = 67B1D9F5FD2899276BC4F035 /* Core.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 0B1217D80E82EA0A8FEF8E18;
 			remoteInfo = libCore.a;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		2448D2E14C838B93341F1921 /* frag.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = frag.glsl; path = Source/Shaders/frag.glsl; sourceTree = "<group>"; };
-		67B1D9F5FD2899276BC4F035 /* libCore.a */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Core.xcodeproj"; path = ../Core/Core.xcodeproj; sourceTree = SOURCE_ROOT; };
-		720835C39A42EE7581DE7C03 /* vert.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = vert.glsl; path = Source/Shaders/vert.glsl; sourceTree = "<group>"; };
-		84E0B32AD4F447DC5772796A /* App */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = App; path = App; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0E9D5EC853C739E9774BC2C /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = App.cpp; path = Source/App.cpp; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		C8F3A39AB4E4AF4C071C49DA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				86F7700498AEAFF60E1C9E44 /* libCore.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		AA364286569902B8152178C6 /* Embed Libraries */ = {
@@ -59,6 +40,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		67B1D9F5FD2899276BC4F035 /* Core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Core.xcodeproj; path = ../Core/Core.xcodeproj; sourceTree = SOURCE_ROOT; };
+		720835C39A42EE7581DE7C03 /* vert.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; name = vert.glsl; path = Source/Shaders/vert.glsl; sourceTree = "<group>"; };
+		84E0B32AD4F447DC5772796A /* App */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = App; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0E9D5EC853C739E9774BC2C /* App.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = App.cpp; path = Source/App.cpp; sourceTree = "<group>"; };
+		E5AF1DF02E4C406A004FE12D /* frag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = frag.cpp; path = Source/Shaders/frag.cpp; sourceTree = "<group>"; };
+		E5AF1DF12E4C406A004FE12D /* frag.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = frag.hpp; path = Source/Shaders/frag.hpp; sourceTree = "<group>"; };
+		E5AF1DF22E4C40CA004FE12D /* vert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = vert.cpp; path = Source/Shaders/vert.cpp; sourceTree = "<group>"; };
+		E5AF1DF32E4C40CA004FE12D /* vert.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = vert.hpp; path = Source/Shaders/vert.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C8F3A39AB4E4AF4C071C49DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				86F7700498AEAFF60E1C9E44 /* libCore.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		70DA1C0B6A401D7D5DDB7A4B /* Products */ = {
@@ -88,8 +91,11 @@
 		C882275C6CD4C50E7F0D0D9C /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				2448D2E14C838B93341F1921 /* frag.glsl */,
 				720835C39A42EE7581DE7C03 /* vert.glsl */,
+				E5AF1DF02E4C406A004FE12D /* frag.cpp */,
+				E5AF1DF12E4C406A004FE12D /* frag.hpp */,
+				E5AF1DF22E4C40CA004FE12D /* vert.cpp */,
+				E5AF1DF32E4C40CA004FE12D /* vert.hpp */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -133,9 +139,16 @@
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "App" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+				Base,
+			);
 			mainGroup = E1231441EC53C43345F64281 /* App */;
 			projectDirPath = "";
 			projectReferences = (
@@ -190,9 +203,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		093B571D734DD90F0C78C55D /* Dist */ = {
 			isa = XCBuildConfiguration;
@@ -202,9 +212,7 @@
 				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
 				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DIST,
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = DIST;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -217,20 +225,18 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-lglfw3",
-					"-framework Cocoa",
-					"-framework IOKit",
-					"-framework CoreVideo",
-					"-framework OpenGL",
+					"-framework",
+					Cocoa,
+					"-framework",
+					IOKit,
+					"-framework",
+					CoreVideo,
+					"-framework",
+					OpenGL,
 				);
 				SYMROOT = "../Binaries/macosx-ARM64/Dist/App";
-				SYSTEM_HEADER_SEARCH_PATHS = (
-					../Dependencies/include,
-					"$(inherited)",
-				);
-				USER_HEADER_SEARCH_PATHS = (
-					Source,
-					../Core/Source,
-				);
+				SYSTEM_HEADER_SEARCH_PATHS = "../Dependencies/include $(inherited)";
+				USER_HEADER_SEARCH_PATHS = "Source ../Core/Source";
 			};
 			name = Dist;
 		};
@@ -243,9 +249,7 @@
 				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					RELEASE,
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = RELEASE;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -258,20 +262,18 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
 					"-lglfw3",
-					"-framework Cocoa",
-					"-framework IOKit",
-					"-framework CoreVideo",
-					"-framework OpenGL",
+					"-framework",
+					Cocoa,
+					"-framework",
+					IOKit,
+					"-framework",
+					CoreVideo,
+					"-framework",
+					OpenGL,
 				);
 				SYMROOT = "../Binaries/macosx-ARM64/Release/App";
-				SYSTEM_HEADER_SEARCH_PATHS = (
-					../Dependencies/include,
-					"$(inherited)",
-				);
-				USER_HEADER_SEARCH_PATHS = (
-					Source,
-					../Core/Source,
-				);
+				SYSTEM_HEADER_SEARCH_PATHS = "../Dependencies/include $(inherited)";
+				USER_HEADER_SEARCH_PATHS = "Source ../Core/Source";
 			};
 			name = Release;
 		};
@@ -285,9 +287,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					DEBUG,
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -300,20 +300,18 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lglfw3",
-					"-framework Cocoa",
-					"-framework IOKit",
-					"-framework CoreVideo",
-					"-framework OpenGL",
+					"-framework",
+					Cocoa,
+					"-framework",
+					IOKit,
+					"-framework",
+					CoreVideo,
+					"-framework",
+					OpenGL,
 				);
 				SYMROOT = "../Binaries/macosx-ARM64/Debug/App";
-				SYSTEM_HEADER_SEARCH_PATHS = (
-					../Dependencies/include,
-					"$(inherited)",
-				);
-				USER_HEADER_SEARCH_PATHS = (
-					Source,
-					../Core/Source,
-				);
+				SYSTEM_HEADER_SEARCH_PATHS = "../Dependencies/include $(inherited)";
+				USER_HEADER_SEARCH_PATHS = "Source ../Core/Source";
 			};
 			name = Debug;
 		};
@@ -379,6 +377,6 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
-};
-rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
 }
