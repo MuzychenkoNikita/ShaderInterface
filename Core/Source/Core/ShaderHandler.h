@@ -18,20 +18,19 @@ std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos
     {
     public:
         unsigned int ID;
-        // constructor generates the shader on the fly
-        // ------------------------------------------------------------------------
         Shader()
+        :mHasPath(false)
         {
             setFragmentCode(defaultFrag);
             setVertexCode(defaultVert);
             setup();
         }
-        // activate the shader
-        // ------------------------------------------------------------------------
+        
         void use()
         {
             glUseProgram(ID);
         }
+        
         void setup()
         {
             // delete previous program if any
@@ -61,7 +60,6 @@ std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos
             glDeleteShader(vertex);
             glDeleteShader(fragment);
         }
-        // utility uniform functions
         // ------------------------------------------------------------------------
         void setBool(const std::string& name, bool value) const
         {
@@ -98,6 +96,7 @@ std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos
         void setFragmentPath(const char* fragmentPath)
         {
             mFragmentPath = fragmentPath;
+            setHasPath(true);
         }
         // ------------------------------------------------------------------------
         const char* getFragmentPath() { return mFragmentPath; }
@@ -108,6 +107,12 @@ std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos
         }
         // ------------------------------------------------------------------------
         const char* getVertexPath() { return mVertexPath; }
+        // ------------------------------------------------------------------------
+        void setHasPath(bool hasPath) {
+            mHasPath = hasPath;
+        }
+        // ------------------------------------------------------------------------
+        bool getHasPath() { return mHasPath; }
         // ------------------------------------------------------------------------
         void saveFragmentFile()
         {
@@ -154,6 +159,7 @@ std::string defaultVert = "#version 330 core\nlayout (location = 0) in vec3 aPos
         std::ifstream mFragmentShaderFile;
         const char* mVertexPath;
         const char* mFragmentPath;
+        bool mHasPath;
 
         // utility function for checking shader compilation/linking errors.
         // ------------------------------------------------------------------------

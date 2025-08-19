@@ -218,16 +218,23 @@ namespace SHAD
         }
 
         void showFileMenu() {
-            ImGui::MenuItem("(demo menu)", NULL, false, false);
             if (ImGui::MenuItem("New")) {
-                mMainShader.setFragmentPath(tinyfd_saveFileDialog("", "", 0, NULL, NULL));
-                mMainShader.newFragmentFile();
-                std::cout << "New file created at " + std::string(mMainShader.getFragmentPath()) + "\n";
+                try {
+                    const char* path = tinyfd_saveFileDialog("", "", 0, NULL, NULL);
+                    if (!path) { throw std::runtime_error("Save canceled by user."); }
+                    mMainShader.setFragmentPath(path);
+                    mMainShader.newFragmentFile();
+                    std::cout << "New file created at " + std::string(mMainShader.getFragmentPath()) + "\n";
+                } catch (const std::exception& e) { std::cerr << "[Save Error] " << e.what() << "\n"; }
             }
-            if (ImGui::MenuItem("Open", "Ctrl+O")) { 
-                mMainShader.setFragmentPath(tinyfd_openFileDialog("Bruh", "", 0, NULL, NULL, 0));
-                mMainShader.openFragmentFile();
-                std::cout << "Opened file from " + std::string(mMainShader.getFragmentPath()) + "\n";
+            if (ImGui::MenuItem("Open", "Ctrl+O")) {
+                try {
+                    const char* path = tinyfd_openFileDialog("Choose a shader file", "", 0, NULL, ".glsl", 0);
+                    if (!path) { throw std::runtime_error("Open canceled by user."); }
+                    mMainShader.setFragmentPath(path);
+                    mMainShader.openFragmentFile();
+                    std::cout << "Opened file from " + std::string(mMainShader.getFragmentPath()) + "\n";
+                } catch (const std::exception& e) { std::cerr << "[Open Error] " << e.what() << "\n"; }
             }
             if (ImGui::BeginMenu("Open Recent"))
             {
@@ -247,13 +254,28 @@ namespace SHAD
                 ImGui::EndMenu();
             }
             if (ImGui::MenuItem("Save", "Ctrl+S")) {
-                mMainShader.saveFragmentFile();
-                std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+                if (mMainShader.getHasPath()) {
+                    mMainShader.saveFragmentFile();
+                    std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+                }
+                else {
+                    try {
+                        const char* path = tinyfd_saveFileDialog("", "", 0, NULL, NULL);
+                        if (!path) { throw std::runtime_error("Save canceled by user."); }
+                        mMainShader.setFragmentPath(path);
+                        mMainShader.saveFragmentFile();
+                        std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+                    } catch (const std::exception& e) { std::cerr << "[Save Error] " << e.what() << "\n"; }
+                }
             }
             if (ImGui::MenuItem("Save As..")) {
-                mMainShader.setFragmentPath(tinyfd_saveFileDialog("", "", 0, NULL, NULL));
-                mMainShader.saveFragmentFile();
-                std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+                try {
+                    const char* path = tinyfd_saveFileDialog("", "", 0, NULL, NULL);
+                    if (!path) { throw std::runtime_error("Save canceled by user."); }
+                    mMainShader.setFragmentPath(path);
+                    mMainShader.saveFragmentFile();
+                    std::cout << "File saved as " + std::string(mMainShader.getFragmentPath()) + "\n";
+                } catch (const std::exception& e) { std::cerr << "[Save Error] " << e.what() << "\n"; }
             }
         }
 
