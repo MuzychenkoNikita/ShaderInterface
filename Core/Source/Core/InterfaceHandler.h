@@ -151,11 +151,32 @@ namespace SHAD
                 ImGui::EndMainMenuBar();
             }
             // Viewport
-            if (ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoScrollbar)) {
-                //ImGui::SetWindowFontScale(1.2);
-                ImVec2 windowSize = ImGui::GetContentRegionAvail();
-                ImGui::Image((void*)mCustomFramebuffer.GetTextureID(), ImVec2(windowSize.x, windowSize.x * 9 / 16), ImVec2(0.0f, 1.0f), ImVec2(1.0f, 0.0f));
-            }ImGui::End();
+            if (ImGui::Begin("Viewport", nullptr, ImGuiWindowFlags_NoScrollbar)) {
+                ImVec2 avail = ImGui::GetContentRegionAvail();
+                const float aspect = 16.0f / 9.0f; // later: user-selectable aspect
+
+                float w = avail.x;
+                float h = w / aspect;
+
+                // If it doesn’t fit vertically, adjust based on height
+                if (h > avail.y) {
+                    h = avail.y;
+                    w = h * aspect;
+                }
+
+                // center inside the available region so you don’t see a “gap” only on the right
+                ImVec2 cursor = ImGui::GetCursorPos();
+                ImGui::SetCursorPos(ImVec2(cursor.x + (avail.x - w) * 0.5f,
+                                           cursor.y + (avail.y - h) * 0.5f));
+
+                ImGui::Image(
+                    (ImTextureID)(intptr_t)mCustomFramebuffer.GetTextureID(),
+                    ImVec2((float)(int)w, (float)(int)h),
+                    ImVec2(0.0f, 1.0f),
+                    ImVec2(1.0f, 0.0f)
+                );
+            }
+            ImGui::End();
 
             // Editor
             if (ImGui::Begin("Editor", NULL, ImGuiWindowFlags_NoScrollbar)) {
