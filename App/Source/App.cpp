@@ -92,7 +92,7 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    SHAD::Framebuffer customFramebuffer(1920, 1080);
+    SHAD::Framebuffer customFramebuffer(1000, 1000);
 
     SHAD::Interface mainInterface(window, customFramebuffer, mainShader);
 
@@ -113,7 +113,7 @@ int main()
 
         mainShader.use();
         mainShader.setFloat("iTime", glfwGetTime());
-        mainShader.setVec2("iResolution", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
+        mainShader.setVec2("iResolution", glm::vec2(customFramebuffer.GetSize()));
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 

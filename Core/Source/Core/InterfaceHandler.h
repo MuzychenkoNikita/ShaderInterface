@@ -6,6 +6,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
@@ -153,18 +155,17 @@ namespace SHAD
             // Viewport
             if (ImGui::Begin("Viewport", nullptr, ImGuiWindowFlags_NoScrollbar)) {
                 ImVec2 avail = ImGui::GetContentRegionAvail();
-                const float aspect = 16.0f / 9.0f; // later: user-selectable aspect
+                const float aspect = mCustomFramebuffer.GetSize().x / mCustomFramebuffer.GetSize().y;
 
                 float w = avail.x;
                 float h = w / aspect;
 
-                // If it doesn’t fit vertically, adjust based on height
                 if (h > avail.y) {
                     h = avail.y;
                     w = h * aspect;
                 }
 
-                // center inside the available region so you don’t see a “gap” only on the right
+                // center inside
                 ImVec2 cursor = ImGui::GetCursorPos();
                 ImGui::SetCursorPos(ImVec2(cursor.x + (avail.x - w) * 0.5f,
                                            cursor.y + (avail.y - h) * 0.5f));
@@ -179,14 +180,16 @@ namespace SHAD
             ImGui::End();
 
             // Editor
-            if (ImGui::Begin("Editor", NULL, ImGuiWindowFlags_NoScrollbar)) {
+            if (ImGui::Begin("Editor", NULL, NULL)) {
+                static float textScrollY = 2.0f;
                 std::string str = mMainShader.getFragmentCode();
                 static char text[9256];
                 // Copy string content
                 std::strncpy(text, str.c_str(), sizeof(text));
                 // Ensure null-termination
                 text[sizeof(text) - 1] = '\0';
-
+                
+                ImGui::SetNextWindowScroll(ImVec2(0.0f, textScrollY));
                 // Line Numbers
                 if (ImGui::BeginChild("LineNumbers", ImVec2(20 * mFontMultiplier, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar)) {
                     ImGui::SetWindowFontScale(mFontMultiplier);
@@ -205,7 +208,7 @@ namespace SHAD
                 ImGui::SameLine();
 
                 // Text Area
-                if (ImGui::BeginChild("TextArea", ImVec2(-FLT_MIN, -FLT_MIN), false, ImGuiWindowFlags_NoScrollbar))
+                if (ImGui::BeginChild("TextArea", ImVec2(-FLT_MIN, -FLT_MIN), false, NULL))
                 {
                     if (ImGui::Shortcut(ImGuiModFlags_Ctrl + ImGuiKey_MouseWheelY, NULL)) {
                         mFontMultiplier += (float)io->MouseWheel / 10.;
@@ -218,14 +221,104 @@ namespace SHAD
                     str = text;
                     mMainShader.setFragmentCode(str);
                     mMainShader.setup();
+                    textScrollY = ImGui::GetScrollY();
                     //ImGui::PopFont();
                 }ImGui::EndChild();
             }ImGui::End();
+            
+            char timeBuffer[50];
+            sprintf(timeBuffer, "%.2f", glfwGetTime());
+            
+            if (ImGui::Begin("Input", NULL, NULL)) {
+                if (ImGui::Button("Reset Time")) {
+                    glfwSetTime(0.0);
+                }
+                ImGui::SameLine();
+                ImGui::TextUnformatted(timeBuffer);
+                
+                ImGui::SameLine();
+                
+                static int selectedResolution = -1;
+                const char* resolutions[] = { "1920/1080", "1920/1440", "1000/1000", "custom..", };
+                static const char* resolutionInfo = selectedResolution == -1 ? "<None>" : resolutions[selectedResolution];
 
-            // processes all the UI elements
+                // Simple selection popup (if you want to show the current selection inside the Button itself,
+                // you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
+                if (ImGui::Button("Resolution"))
+                    ImGui::OpenPopup("Resolution_popup");
+                ImGui::SameLine();
+                ImGui::TextUnformatted(resolutionInfo);
+                if (ImGui::BeginPopup("Resolution_popup"))
+                {
+                    //ImGui::SeparatorText("Aquarium");
+                    for (int i = 0; i < IM_ARRAYSIZE(resolutions); i++)
+                        if (ImGui::Selectable(resolutions[i]))
+                            selectedResolution = i;
+                    ImGui::EndPopup();
+                    switch (selectedResolution) {
+                        case 0:
+                            mCustomFramebuffer.SetSize(1920, 1080);
+                            resolutionInfo = "1920/1080";
+                            std::cout << "Resolution is set to 1920/1080\n";
+                            break;
+                        case 1:
+                            mCustomFramebuffer.SetSize(1920, 1440);
+                            resolutionInfo = "1920/1440";
+                            std::cout << "Resolution is set to 1920/1440\n";
+                            break;
+                        case 2:
+                            mCustomFramebuffer.SetSize(1000, 1000);
+                            resolutionInfo = "1000/1000";
+                            std::cout << "Resolution is set to 1000/1000\n";
+                            break;
+                        case 3:
+                            ImGui::OpenPopup("Custom Resolution");
+                            std::cout << "User used custom resolution\n";
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                // Always center this window when appearing
+                ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+                ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+                if (ImGui::BeginPopupModal("Custom Resolution", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+                {
+                    ImGui::Text("Choose the viewport resolution");
+                    ImGui::Separator();
+
+                    static char bufW[6] = ""; ImGui::InputText("Width",   bufW, 6, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterNoDot);
+                    //ImGui::SameLine();
+                    ImGui::Separator();
+                    static char bufH[6] = ""; ImGui::InputText("Height",   bufH, 6, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, TextFilters::FilterNoDot);
+                    
+                    if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); mCustomFramebuffer.SetSize(strtoul(bufW, NULL, 10), strtoul(bufH, NULL, 10));
+                        selectedResolution = -1;
+                        static std::string s;
+                        s = bufW; s += '/'; s += bufH;
+                        resolutionInfo = s.c_str();
+                    }
+                    
+                    ImGui::EndPopup();
+                }
+                
+                
+            }ImGui::End();
+            
+            ImGui::ShowDemoWindow();
+
             ImGui::Render();
         }
-
+        
+        struct TextFilters
+        {
+            static int FilterNoDot(ImGuiInputTextCallbackData* data) {
+                if (data->EventChar == '.' ) return 1; // reject dot
+                return 0;                               // accept everything else allowed by the flag
+            }
+        };
+        
         inline void deleteInterface() {
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

@@ -21,13 +21,7 @@ namespace SHAD
 			glGenFramebuffers(1, &mFBO);
 			glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
 			// Create Color Texture
-			glGenTextures(1, &mTextureID);
-			glBindTexture(GL_TEXTURE_2D, mTextureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTextureID, 0);
+            createColorTexture();
 			// Check FBO for completness
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -43,9 +37,10 @@ namespace SHAD
 
 		inline uint32_t GetFBO() const { return mFBO; }
 		inline uint32_t GetTextureID() const { return mTextureID; }
-		inline void GetSize(uint32_t& width, uint32_t& height) const { width = mWidth; height = mHeight; }
+		inline glm::vec2 GetSize() const { return glm::vec2 (mWidth, mHeight); }
 		inline void GetClearColor(glm::vec4& color) const { color = mColor; }
 		inline void SetClearColor(glm::vec4& color) { mColor = color; }
+        inline void SetSize(uint32_t width, uint32_t height) { mWidth = width; mHeight = height; BindBuffer(); glDeleteTextures(1, &mTextureID); createColorTexture(); }
 
 		void BindBuffer() 
 		{
@@ -63,5 +58,15 @@ namespace SHAD
 		uint32_t mTextureID;
 		uint32_t mWidth, mHeight;
 		glm::vec4 mColor;
+        
+        inline void createColorTexture() {
+            glGenTextures(1, &mTextureID);
+            glBindTexture(GL_TEXTURE_2D, mTextureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTextureID, 0);
+        }
 	};
 }
