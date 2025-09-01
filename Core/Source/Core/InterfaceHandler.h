@@ -3,6 +3,7 @@
 #include "Core/Core.h"
 #include "Core/Framebuffer.h"
 #include "Core/ShaderHandler.h"
+#include "Core/Utilities.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -111,6 +112,8 @@ namespace SHAD
             ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
     #endif
             ImGui_ImplOpenGL3_Init("#version 330");
+            
+            SHAD::addTexture2D(addImportTextureID, "/Users/nikitamuzycenko/VSRepos/ShaderInterface/App/Source/Textures/icon.png");
         }
         
         ~Interface() {}
@@ -240,7 +243,7 @@ namespace SHAD
                 
                 static int selectedResolution = -1;
                 const char* resolutions[] = { "1920/1080", "1920/1440", "1000/1000", "custom..", };
-                static const char* resolutionInfo = selectedResolution == -1 ? "<None>" : resolutions[selectedResolution];
+                static const char* resolutionInfo = "1000/1000";
 
                 // Simple selection popup (if you want to show the current selection inside the Button itself,
                 // you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
@@ -248,8 +251,7 @@ namespace SHAD
                     ImGui::OpenPopup("Resolution_popup");
                 ImGui::SameLine();
                 ImGui::TextUnformatted(resolutionInfo);
-                if (ImGui::BeginPopup("Resolution_popup"))
-                {
+                if (ImGui::BeginPopup("Resolution_popup")) {
                     //ImGui::SeparatorText("Aquarium");
                     for (int i = 0; i < IM_ARRAYSIZE(resolutions); i++)
                         if (ImGui::Selectable(resolutions[i]))
@@ -279,7 +281,38 @@ namespace SHAD
                             break;
                     }
                 }
-                // Always center this window when appearing
+                
+                
+                // iChannel Inputs
+                ImGui::Dummy(ImVec2(0, 15));
+                    // No tint
+                static int iChannelsCount = 1;
+                static std::string iChannelsCountString;
+                for (int i = 0; i < iChannelsCount; i++){
+                    
+                    
+                    /*if (ImGui::ImageButton("iChannel" + i, (ImTextureID)mCustomFramebuffer.GetTextureID(), size, uv0, uv1, bg_col, tint_col)) {
+                        
+                    }*/
+                    std::string name = "iChannel" + std::to_string(i);
+                    if (ImGui::Button(name.c_str(), ImVec2(200, 200))) {
+                        ImGui::OpenPopup("iChannelPopUp");
+                    }
+                    
+                    ImGui::SameLine();
+                    ImGui::Dummy(ImVec2(15, 0));
+                    ImGui::SameLine();
+                }
+                ImGui::SameLine();
+                
+                if (ImGui::Button("+", ImVec2(200, 200)))
+                {
+                    iChannelsCount++;
+                    std::cout<<"Number of iChannels now is: " + iChannelsCount + '\n';
+                }
+                
+                
+                // Custom Resolution Pop Up
                 ImVec2 center = ImGui::GetMainViewport()->GetCenter();
                 ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
@@ -299,6 +332,81 @@ namespace SHAD
                         s = bufW; s += '/'; s += bufH;
                         resolutionInfo = s.c_str();
                     }
+                    
+                    ImGui::EndPopup();
+                }
+                
+                ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+                if (ImGui::BeginPopupModal("iChannelPopUp", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+                {
+                    ImGui::Text("Choose the iChannel Input");
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(410);
+                    if (ImGui::Button("x", ImVec2(0, 0))) { ImGui::CloseCurrentPopup();}
+                    ImGui::Separator();
+
+                    if (ImGui::Button("Texture", ImVec2(100, 100))) {
+                        try {
+                            const char* path = tinyfd_openFileDialog("Choose an apropriate iChannel format file", "", 0, NULL, NULL, 0);
+                            if (!path) { throw std::runtime_error("Open canceled by user."); }
+                            //=====
+                            
+                            //=====
+                            std::cout << "iChannel input is now set to Texture";
+                        } catch (const std::exception& e) { std::cerr << "[Open Error] " << e.what() << "\n"; }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Cubemap", ImVec2(100, 100))) {
+                        try {
+                            const char* path = tinyfd_openFileDialog("Choose an apropriate iChannel format file", "", 0, NULL, NULL, 0);
+                            if (!path) { throw std::runtime_error("Open canceled by user."); }
+                            //=====
+                            
+                            //=====
+                            std::cout << "iChannel input is now set to Cubemap";
+                        } catch (const std::exception& e) { std::cerr << "[Open Error] " << e.what() << "\n"; }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Audio", ImVec2(100, 100))) {
+                        try {
+                            const char* path = tinyfd_openFileDialog("Choose an apropriate iChannel format file", "", 0, NULL, NULL, 0);
+                            if (!path) { throw std::runtime_error("Open canceled by user."); }
+                            //=====
+                            
+                            //=====
+                            std::cout << "iChannel input is now set to Audio";
+                        } catch (const std::exception& e) { std::cerr << "[Open Error] " << e.what() << "\n"; }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Video", ImVec2(100, 100))) {
+                        try {
+                            const char* path = tinyfd_openFileDialog("Choose an apropriate iChannel format file", "", 0, NULL, NULL, 0);
+                            if (!path) { throw std::runtime_error("Open canceled by user."); }
+                            //=====
+                            
+                            //=====
+                            std::cout << "iChannel input is now set to Video";
+                        } catch (const std::exception& e) { std::cerr << "[Open Error] " << e.what() << "\n"; }
+                    }
+                    // ================================================'
+                    if (ImGui::Button("WebCam", ImVec2(100, 100))) {
+                        
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Keyboard", ImVec2(100, 100))) {
+                        
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Microphone", ImVec2(100, 100))) {
+                        
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("BufferX", ImVec2(100, 100))) {
+                        
+                    }
+                    
+                    
                     
                     ImGui::EndPopup();
                 }
@@ -399,6 +507,7 @@ namespace SHAD
         Shader& mMainShader;
         float mFontMultiplier;
         ImGuiIO* io;
+        uint32_t addImportTextureID;
     };
 
 
